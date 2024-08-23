@@ -1,21 +1,24 @@
-local neogradle = {}
+local M = {}
 
 local config = {}
 
-neogradle.config = config
+M.config = config
 
-local file = io.open("walhaynigga.txt", "a")
+M.job_id = 0
 
-local on_stdout = function(chan, data, name)
-    -- file:write(vim.inspect(data))
+M.rpcrequest = function(request, ...)
+    for k, v in ipairs(arg) do
+        request = request .. "', '" .. v
+    end
+    vim.cmd("echo rpcrequest(" .. M.job_id .. ", '" .. request .. "')")
 end
 
-neogradle.setup = function(args)
-    -- local exec_path = "/Users/walhay/projects/NeoGradle/build/install/NeoGradle/bin/NeoGradle"
-    -- local job_id = vim.fn.jobstart({ "sh", exec_path }, { rpc = true, on_stderr = on_stdout, on_stdout = on_stdout })
+M.setup = function(args)
+    local exec_path = "/Users/walhay/projects/NeoGradle/build/install/NeoGradle/bin/neogradle"
+    M.job_id = vim.fn.jobstart({ "sh", exec_path }, { rpc = true })
 
-    vim.api.nvim_create_user_command("Nigger", function() print(vim.g.gradle.job_id) end, {})
-    vim.api.nvim_create_user_command("Zigger", function() vim.rpcrequest(vim.g.gradle.job_id, "gradle", "nigga") end, {})
+    vim.api.nvim_create_user_command("NeoGradleJobId", function() print(M.job_id) end, {})
+    vim.api.nvim_create_user_command("NeoGradleStatus", function() M.rpcrequest("gradle", "dick") end, {})
 end
 
-return neogradle
+return M

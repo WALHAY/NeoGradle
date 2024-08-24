@@ -1,5 +1,7 @@
 local M = {}
 
+local window_manager = require("windows.task_window")
+
 local config = {}
 
 M.config = config
@@ -18,7 +20,8 @@ M.setup = function(args)
     M.job_id = vim.fn.jobstart({ "sh", exec_path }, { rpc = true })
 
     vim.api.nvim_create_user_command("NeoGradleJobId", function() print(M.job_id) end, {})
-    vim.api.nvim_create_user_command("NeoGradleStatus", function() M.rpcrequest("gradle", "dick") end, {})
+    vim.api.nvim_create_user_command("NeoGradleStatus", function() M.rpcrequest("gradle", "status") end, {})
+    window_manager.config();
 end
 
 return M

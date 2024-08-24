@@ -2,31 +2,27 @@ package com.walhay.neogradle;
 
 import com.ensarsarajcic.neovim.java.corerpc.client.RpcClient;
 import com.ensarsarajcic.neovim.java.handler.NeovimHandlerManager;
-import com.ensarsarajcic.neovim.java.handler.annotations.NeovimRequestHandler;
+import com.walhay.neogradle.handlers.GradleRequestHandler;
 
 public class NeovimClient {
 
     private static final NeovimClient NEOVIM_CLIENT = new NeovimClient();
 
-    private RpcClient client;
-    private NeovimHandlerManager handlerManager;
+    private final RpcClient client = RpcClient.getDefaultAsyncInstance();
+    private final NeovimHandlerManager handler = new NeovimHandlerManager();
+    private final GradleRequestHandler requestHandler = new GradleRequestHandler();
 
     public NeovimClient() {
-        this.client = RpcClient.getDefaultAsyncInstance();
-
-        this.handlerManager = new NeovimHandlerManager();
-
-        this.handlerManager.registerNeovimHandler(this);
-        this.handlerManager.attachToStream(this.client);
+        handler.attachToStream(this.client);
+        handler.registerNeovimHandler(this.requestHandler);
     }
 
-    @NeovimRequestHandler("gradle")
-    public Object handleRequest() {
-        return "OK";
+    public static NeovimHandlerManager getHandlerManager(){
+        return NEOVIM_CLIENT.handler;
     }
 
-    public RpcClient getClient() {
-        return this.client;
+    public static RpcClient getClient() {
+        return NEOVIM_CLIENT.client;
     }
 
     public static NeovimClient getInstance() {

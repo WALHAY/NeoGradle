@@ -14,8 +14,6 @@ local function open_task_window()
     vim.api.nvim_buf_set_lines(buf, 0, 10, false, {
         "Gradle Tasks"
     })
-
-    vim.api.nvim_buf_set_text(buf, 0, 0, 0, 12, { "task" })
 end
 
 M.config = function()

@@ -7,6 +7,6 @@ public class NeoGradle {
 
     public static void main(String[] args) {
         RpcConnection connection = new StdIoRpcConnection();
-        NeovimClient.getClient().attach(connection);
+        NeovimClient.getInstance().attachConnection(connection);
     }
 }

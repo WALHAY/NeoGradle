@@ -9,7 +9,7 @@ M.config = config
 M.job_id = 0
 
 M.rpcrequest = function(request, ...)
-    for k, v in ipairs(arg) do
+    for _, v in ipairs(arg) do
         request = request .. "', '" .. v
     end
     vim.cmd("echo rpcrequest(" .. M.job_id .. ", '" .. request .. "')")
